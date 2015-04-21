@@ -1,6 +1,6 @@
 (ns formal.dom)
 
-; grrr
+; ಠ_ಠ
 (extend-type js/HTMLCollection
   ISeqable (-seq [array] (array-seq array 0)))
 
@@ -18,5 +18,14 @@
 
 (defn domready [handler]
   (.addEventListener js/window "DOMContentLoaded" handler))
+
+(defn input-name [input]
+  (attr input "name"))
+
+(defn input-value [input]
+  (.-value input))
+
+(defn on-submit [form handler]
+  (.addEventListener form "submit" handler))
 
 (defn target [event] (.-target event))

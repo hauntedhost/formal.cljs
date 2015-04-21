@@ -1,38 +1,36 @@
 (ns formal.core
-  (:use [formal.dom :only [attr by-id console-log data domready target]]))
+  (:use [formal.dom :only
+    [attr by-id console-log data domready input-name input-value
+     on-submit target]]))
 
-(defn input-name [input]
-  (attr input "name"))
-
-(defn input-value [input]
-  (.-value input))
-
+; given a form, return array of inputs that have "x_" prefix in name
 (defn x-inputs [form]
   (let [inputs (.getElementsByTagName form "input")]
     (filter #(re-find #"^x_" (str (input-name %))) inputs)))
 
-; map of input name/value pairs
+; given array of inputs, return map with name/value pairs
 (defn input-data [inputs]
   (let [names (map input-name inputs)
         values (map input-value inputs)]
     (zipmap names values)))
 
-(defn on-submit [form handler]
-  (.addEventListener form "submit" handler))
-
+; given a form submission event, build a js object with
+; name/value pairs for x_ inputs
 (defn submit-handler [event]
-  (console-log "submit handler")
+  (console-log "submit being handled")
   (.preventDefault event)
 
   (let [form (target event)
-        form-id (data form "etrigue-form")
+        form-id (data form "form-id")
         inputs (x-inputs form)
-        data (assoc (input-data inputs) "espformid" form-id)]
+        data (assoc (input-data inputs) "formid" form-id)
+        js-data (clj->js data)]
 
-    (console-log (clj->js data))))
+    ; todo: do something with this glorious data
+    (console-log js-data)))
 
 (domready
   (fn []
-    (let [form (by-id "etrigue")]
+    (let [form (by-id "formal")]
       (console-log "dom is ready")
       (on-submit form submit-handler))))
