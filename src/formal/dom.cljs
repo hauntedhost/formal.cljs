@@ -10,14 +10,14 @@
 (defn by-id [id]
   (.getElementById js/document id))
 
+(defn by-tag [el tag]
+  (.getElementsByTagName el tag))
+
 (defn console-log [message]
   (.log js/console message))
 
 (defn data [el key]
   (.getAttribute el (str "data-" key)))
-
-(defn domready [handler]
-  (.addEventListener js/window "DOMContentLoaded" handler))
 
 (defn input-name [input]
   (attr input "name"))
@@ -27,5 +27,8 @@
 
 (defn on-submit [form handler]
   (.addEventListener form "submit" handler))
+
+(defn ready [handler]
+  (.addEventListener js/window "DOMContentLoaded" handler))
 
 (defn target [event] (.-target event))
