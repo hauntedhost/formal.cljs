@@ -1,3 +1,4 @@
+/resources
 /target
 /classes
 /checkouts
@@ -9,3 +10,5 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+*.cache.edn
+
