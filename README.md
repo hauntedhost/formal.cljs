@@ -1,14 +1,12 @@
-# formal
+## "formal"
 
-A Clojure library designed to ... well, that part is up to you.
+first clojurescript experiment.
 
-## Usage
+check out:
+- [index.html](resources/public/index.html)
+- [dom.cljs](src/formal/dom.cljs)
+- [core.cljs](src/formal/core.cljs)
 
-FIXME
+## license
 
-## License
-
-Copyright © 2015 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+formal is released under the MIT license. "got nuts".
