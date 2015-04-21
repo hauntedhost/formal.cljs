@@ -1,6 +1,6 @@
-(ns parature.core-test
+(ns formal.core-test
   (:require [clojure.test :refer :all]
-            [parature.core :refer :all]))
+            [formal.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

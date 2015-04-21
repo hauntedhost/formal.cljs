@@ -1,5 +1,5 @@
-(ns parature.core
-  (:use [parature.dom :only [attr by-id console-log data domready target]]))
+(ns formal.core
+  (:use [formal.dom :only [attr by-id console-log data domready target]]))
 
 (defn input-name [input]
   (attr input "name"))

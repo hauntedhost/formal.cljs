@@ -1,4 +1,4 @@
-(ns parature.dom)
+(ns formal.dom)
 
 ; grrr
 (extend-type js/HTMLCollection
