@@ -8,7 +8,7 @@
   (.getAttribute el key))
 
 (defn by-id [id]
-  (.getElementById js/document (name id)))
+  (.getElementById js/document id))
 
 (defn console-log [message]
   (.log js/console message))

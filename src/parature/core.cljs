@@ -17,8 +17,8 @@
         values (map input-value inputs)]
     (zipmap names values)))
 
-(defn on-submit [selector handler]
-  (.addEventListener (by-id selector) "submit" handler))
+(defn on-submit [form handler]
+  (.addEventListener form "submit" handler))
 
 (defn submit-handler [event]
   (console-log "submit handler")
@@ -33,5 +33,6 @@
 
 (domready
   (fn []
-    (console-log "dom is ready")
-    (on-submit "etrigue" submit-handler)))
+    (let [form (by-id "etrigue")]
+      (console-log "dom is ready")
+      (on-submit form submit-handler))))

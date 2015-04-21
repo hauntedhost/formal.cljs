@@ -1,4 +1,4 @@
-/resources
+/resources/public/out
 /target
 /classes
 /checkouts
@@ -11,4 +11,3 @@ pom.xml.asc
 .hgignore
 .hg/
 *.cache.edn
-
