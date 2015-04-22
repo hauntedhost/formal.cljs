@@ -8,9 +8,20 @@
 
 ; given array of inputs, return map with name/value pairs
 (defn input-data [inputs]
-  (let [names (map dom/input-name inputs)
-        values (map dom/input-value inputs)]
-    (zipmap names values)))
+  (apply conj
+    (for [input inputs]
+      {(dom/input-name input) (dom/input-value input)})))
+
+; zipmap version
+; (defn input-data [inputs]
+;   (let [names (map dom/input-name inputs)
+;         values (map dom/input-value inputs)]
+;     (zipmap names values)))
+
+; expects etrigueForm.js to be loaded in head
+; equivalent to "new EtrigueForm"
+(defn etrigue-form [id]
+  (js/EtrigueForm. id))
 
 ; given a form submission event, build a js object with
 ; name/value pairs for x_ inputs
@@ -24,7 +35,10 @@
         data (assoc (input-data inputs) "formid" form-id)
         js-data (clj->js data)]
 
-    ; todo: do something with this glorious data
+    ; todo: use etrigue-form submitManually function to submit js-data
+    ; (dom/console-log (etrigue-form form-id))
+
+    ; todo: use this glorious data
     (dom/console-log js-data)))
 
 (dom/ready
