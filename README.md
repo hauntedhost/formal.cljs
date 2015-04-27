@@ -1,21 +1,21 @@
-## formal.cljs
+### formal
 
-first clojurescript experiment.
+First ClojureScript experiment.
 
-__humble goals:__
-
-1. intercept a form submission
-2. get name/value pairs from inputs with `x_` prefix in name
-3. zip name/value pairs into a delcious javascript object
+### Humble goals:
+1. Intercept a form submission
+2. Get name/value pairs from inputs with `x_` prefix in name
+3. Zip name/value pairs into a delicious hash
 4. ?
 5. profit
 
-__check out:__
+### Getting started:
+```bash
+$ lein cljsbuild auto dev
+$ pushd resources/public; python -m SimpleHTTPServer; popd
+$ open http://localhost:8000
+```
 
-- [index.html](resources/public/index.html)
-- [dom.cljs](src/formal/dom.cljs)
-- [core.cljs](src/formal/core.cljs)
+#### License
 
-## license
-
-formal is released under the MIT license. "got nuts".
+Released under the MIT license.
