@@ -1,59 +1,49 @@
-(ns formal.core
-  (:require [formal.dom :as dom]))
+(ns ^:figwheel-always formal.core
+  (:require [reagent.core :as ra]))
 
-; given a form, return array of inputs that have "x_" prefix in name
-(defn x-inputs [form]
-  (let [inputs (dom/by-tag form "input")]
-    (filter #(re-find #"^x_" (str (dom/input-name %))) inputs)))
+(enable-console-print!)
 
-; given array of inputs, return map with name/value pairs
-; input-data: into/juxt version
-(defn input-data [inputs]
-  (into {}
-    (map (juxt dom/input-name dom/input-value) inputs)))
+(println "welcome! 吃饭了吗?")
 
-; input-data: reduce version
-; (defn input-data [inputs]
-;   (reduce (fn [result input]
-;     (assoc result (dom/input-name input) (dom/input-value input))) {} inputs))
+;; define your app data so that it doesn't get over-written on reload
+(defonce app-state
+  (atom {:form {}}))
 
-; input-data: for version
-; (defn input-data [inputs]
-;   (apply conj
-;     (for [input inputs]
-;       {(dom/input-name input) (dom/input-value input)})))
+(defn input-change-handler [event]
+  (let [input-name (.. event -target -name)
+        input-value (.. event -target -value)]
+    (swap! app-state
+      assoc-in [:form (keyword input-name)] input-value)))
 
-; input-data: zipmap version
-; (defn input-data [inputs]
-;   (let [names (map dom/input-name inputs)
-;         values (map dom/input-value inputs)]
-;     (zipmap names values)))
-
-; expects etrigueForm.js to be loaded in head
-; equivalent to "new EtrigueForm"
-(defn etrigue-form [id]
-  (js/EtrigueForm. id))
-
-; given a form submission event, build a js object with
-; name/value pairs for x_ inputs
 (defn submit-handler [event]
-  (dom/console-log "submit being handled")
   (.preventDefault event)
+  (let [form-data (clj->js (:form @app-state))]
+    (swap! app-state dissoc :form)
+    (.log js/console form-data)))
 
-  (let [form (dom/target event)
-        form-id (dom/data form "form-id")
-        inputs (x-inputs form)
-        data (assoc (input-data inputs) "formid" form-id)
-        js-data (clj->js data)]
+(defn text-input [input-name data & {:keys [placeholder]}]
+  [:input {:type "text"
+           :name input-name
+           :placeholder placeholder
+           :value (get (:form data) (keyword input-name))
+           :onChange input-change-handler}])
 
-    ; todo: use etrigue-form submitManually function to submit js-data
-    ; (dom/console-log (etrigue-form form-id))
+(defn form-wrapper [data]
+  [:div#formal
+    [:form {:onSubmit submit-handler}
+      [:p [text-input "x_firstname" data :placeholder "First Name"]]
+      [:p [text-input "x_lastname" data :placeholder "Last Name"]]
+      [:p [text-input "x_emailaddress" data :placeholder "Email Address"]]
+      [:p [:input {:type "submit"}]]]])
 
-    ; todo: use this glorious data
-    (dom/console-log js-data)))
+(defn render [data]
+  (ra/render [form-wrapper data]
+    (.getElementById js/document "app")))
 
-(dom/ready
-  (fn []
-    (let [form (dom/by-id "formal")]
-      (dom/console-log "dom is ready")
-      (dom/on-submit form submit-handler))))
+(defonce watch-app-state
+  (add-watch app-state :on-change
+    (fn [_ _ _ new-state]
+     (prn new-state)
+     (render new-state))))
+
+(render @app-state)
