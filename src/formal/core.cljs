@@ -7,12 +7,23 @@
     (filter #(re-find #"^x_" (str (dom/input-name %))) inputs)))
 
 ; given array of inputs, return map with name/value pairs
+; input-data: into/juxt version
 (defn input-data [inputs]
-  (apply conj
-    (for [input inputs]
-      {(dom/input-name input) (dom/input-value input)})))
+  (into {}
+    (map (juxt dom/input-name dom/input-value) inputs)))
 
-; zipmap version
+; input-data: reduce version
+; (defn input-data [inputs]
+;   (reduce (fn [result input]
+;     (assoc result (dom/input-name input) (dom/input-value input))) {} inputs))
+
+; input-data: for version
+; (defn input-data [inputs]
+;   (apply conj
+;     (for [input inputs]
+;       {(dom/input-name input) (dom/input-value input)})))
+
+; input-data: zipmap version
 ; (defn input-data [inputs]
 ;   (let [names (map dom/input-name inputs)
 ;         values (map dom/input-value inputs)]
